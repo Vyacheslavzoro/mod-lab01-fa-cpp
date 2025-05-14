@@ -9,7 +9,6 @@ unsigned int faStr1(const char *str) {
     bool containsDigit = false;
 
     for (int i = 0; str[i]; ++i) {
-        // Если слово закончилось и в нём не было цифр — увеличиваем счётчик
         if (std::isspace(str[i])) {
             if (inWord && !containsDigit) {
                 ++count;
