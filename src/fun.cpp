@@ -1,96 +1,71 @@
 // Copyright 2022 UNN-IASR
 #include "fun.h"
 #include <cctype>
-#include <cstring>
 
-unsigned int faStr1(const char *str) {
-    unsigned int count = 0;
-    bool inWord = false;
-    bool containsDigit = false;
+unsigned int faStr1(const char* txt) {
+    unsigned cnt = 0;
+    bool wordFlag = false, digitFound = false;
+    size_t pos = 0;
 
-    for (int i = 0; str[i]; ++i) {
-        if (std::isspace(str[i])) {
-            if (inWord && !containsDigit) {
-                ++count;
-            }
-            inWord = false;
-            containsDigit = false;
+    while (txt[pos] != '\0') {
+        if (isspace(txt[pos])) {
+            if (wordFlag && !digitFound) cnt++;
+            wordFlag = digitFound = false;
         } else {
-            if (!inWord) {
-                inWord = true;
-                containsDigit = false;
+            if (!wordFlag) {
+                wordFlag = true;
+                digitFound = false;
             }
-            if (std::isdigit(str[i])) {
-                containsDigit = true;
-            }
+            if (isdigit(txt[pos])) digitFound = true;
         }
+        pos++;
     }
-
-    if (inWord && !containsDigit) {
-        ++count;
-    }
-
-    return count;
+    if (wordFlag && !digitFound) cnt++;
+    return cnt;
 }
 
-unsigned int faStr2(const char *str) {
-    unsigned int count = 0;
-    bool inWord = false;
-    bool validWord = false;
-    int i = 0;
+unsigned int faStr2(const char* s) {
+    unsigned valid = 0;
+    size_t i = 0;
 
-    while (str[i]) {
-        while (std::isspace(str[i])) ++i;
+    while (s[i]) {
+        while (isspace(s[i])) i++;
+        if (!s[i]) break;
 
-        if (!str[i]) break;
+        bool proper = true;
+        const size_t start = i;
 
-        if (std::isupper(str[i])) {
-            inWord = true;
-            validWord = true;
-            ++i;
-
-            while (str[i] && !std::isspace(str[i])) {
-                if (!std::islower(str[i])) {
-                    validWord = false;
-                }
-                ++i;
+        if (isupper(s[i])) {
+            i++;
+            while (s[i] && !isspace(s[i])) {
+                if (!islower(s[i])) proper = false;
+                i++;
             }
-
-            if (validWord) {
-                ++count;
-            }
+            if (proper) valid++;
         } else {
-            while (str[i] && !std::isspace(str[i])) {
-                ++i;
-            }
+            while (s[i] && !isspace(s[i])) i++;
         }
     }
-
-    return count;
+    return valid;
 }
 
-unsigned int faStr3(const char *str) {
-    unsigned int totalLength = 0;
-    unsigned int wordCount = 0;
+unsigned int faStr3(const char* text) {
+    size_t chars = 0, words = 0;
     bool inWord = false;
 
-    for (int i = 0; str[i]; ++i) {
-        if (std::isspace(str[i])) {
+    for (size_t p = 0; text[p]; p++) {
+        if (isspace(text[p])) {
             if (inWord) {
-                ++wordCount;
+                words++;
                 inWord = false;
             }
         } else {
-            ++totalLength;
+            chars++;
             inWord = true;
         }
     }
+    if (inWord) words++;
 
-    if (inWord) {
-        ++wordCount;
-    }
-
-    if (wordCount == 0) return 0;
-
-    return static_cast<unsigned int>((totalLength + wordCount / 2) / wordCount);
+    if (!words) return 0;
+    return (chars + words / 2) / words;
 }
