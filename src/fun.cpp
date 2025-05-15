@@ -1,11 +1,12 @@
 // Copyright 2022 UNN-IASR
 #include "fun.h"
 #include <cctype>
+#include <cstddef>
 
 unsigned int faStr1(const char* txt) {
     unsigned cnt = 0;
     bool wordFlag = false, digitFound = false;
-    size_t pos = 0;
+    std::size_t pos = 0;
 
     while (txt[pos] != '\0') {
         if (isspace(txt[pos])) {
@@ -26,14 +27,14 @@ unsigned int faStr1(const char* txt) {
 
 unsigned int faStr2(const char* s) {
     unsigned valid = 0;
-    size_t i = 0;
+    std::size_t i = 0;
 
     while (s[i]) {
         while (isspace(s[i])) i++;
         if (!s[i]) break;
 
         bool proper = true;
-        const size_t start = i;
+        const std::size_t start = i;
 
         if (isupper(s[i])) {
             i++;
@@ -50,10 +51,10 @@ unsigned int faStr2(const char* s) {
 }
 
 unsigned int faStr3(const char* text) {
-    size_t chars = 0, words = 0;
+    std::size_t chars = 0, words = 0;
     bool inWord = false;
 
-    for (size_t p = 0; text[p]; p++) {
+    for (std::size_t p = 0; text[p]; p++) {
         if (isspace(text[p])) {
             if (inWord) {
                 words++;
